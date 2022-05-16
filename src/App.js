@@ -1,23 +1,22 @@
-import logo from './logo.svg';
+import ResponseSection from './components/ResponseSection';
 import './App.css';
+import { useState } from "react";
 
 function App() {
+  const [userInput, setUserInput] = useState('');
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Fun with AI</h1>
+
+      <section id="input-section">
+        <form>
+          <label htmlFor='user-prompt'>Enter prompt</label>
+          <textarea id="user-prompt" onChange={(e) => setUserInput(e.target.value)}></textarea>
+        </form>
+      </section>
+
+      <ResponseSection userInput={userInput} />
     </div>
   );
 }
