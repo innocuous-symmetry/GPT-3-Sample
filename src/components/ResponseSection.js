@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function ResponseSection({ userPrompt, userInput }) {
-    let secret = process.env.REACT_APP_API_SECRET;
-
+export default function ResponseSection({ userInput, response, responseRef }) {
     const [resCount, setResCount] = useState(1);
+
     const [contents, setContents] = useState([
         <div key="response-1" className="single-response-block">
             <p className="response-component label prompt-label">Prompt:</p>
@@ -13,54 +12,31 @@ export default function ResponseSection({ userPrompt, userInput }) {
         </div>
     ]);
 
-    const addNewResponse = async () => {
-        let data = { prompt: userInput };
-
-        let result = await fetch("https://api.openai.com/v1/engines/text-curie-001/completions", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${secret}`
-            },
-            body: JSON.stringify(data)
-        }).then(res => res.json());
-
-        let AIresponse = result.choices[0].text;
-        
+    const appendResponse = () => {
         let newState = contents;
         let newCount;
-        AIresponse && (newCount = newState.unshift(
-            <div key={`response-${resCount + 1}`} className="single-response-block">
+        response && (newCount = setContents(newState.unshift(
+            <div key={`response-${resCount+1}`} className="single-response-block">
                 <p className="response-component label prompt-label">Prompt:</p>
                 <p className="response-component prompt">{userInput}</p>
                 <p className="response-component label response-label">Response:</p>
-                <p className="response-component response">{AIresponse}</p>
+                <p className="response-component response">{response}</p>
             </div>
-        ));
+        )));
 
         setResCount(newCount);
-        setContents(newState);
+
+        console.log(contents);
     }
 
+    useEffect(() => {
+        responseRef.current = appendResponse;
+    }, []);
+    
     return (
-        <section>
-            <div className="submit">
-                <div className="preset-box">
-                    <label htmlFor="presets">Feeling stuck? Choose from some pre-written prompts:</label>
-                    <select name="presets" id="presets" onChange={(e) => userPrompt = e.target.value}>
-                        <option value="preset-1">What's your favorite color?</option>
-                        <option value="preset-2">Tell me about your best friend.</option>
-                        <option value="preset-3">What do you dream about?</option>
-                        <option value="preset-4">Tell me a good joke.</option>
-                    </select>
-                </div>
-                <button onClick={addNewResponse}>Submit</button>
-            </div>
-
-            <section id="responses">
-                <h2>Responses</h2>
-                {contents}
-            </section>
+        <section id="responses">
+            <h2>Responses</h2>
+            {contents}
         </section>
     )
 }
