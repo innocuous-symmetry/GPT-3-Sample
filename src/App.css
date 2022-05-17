@@ -1,38 +1,104 @@
+/* Universal styles */
+
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  width: 60vw;
+  height: 100vh;
+  margin: 0 15vw;
+}
+
+button {
+  background-color: rgb(33, 33, 245);
+  color: white;
+  border-radius: 3px;
+  border: none;
+  width: 20%;
+  height: 3rem;
+}
+
+button:hover {
+  background-color: white;
+  color: rgb(33, 33, 245);
+  border: 1px solid rgb(33, 33, 245);
+}
+
+button:active {
+  background-color: rgb(100, 33, 245);
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+/* Input section styles */
+
+#input-section {
+  display: flex;
+  padding: 1rem;
+  flex-direction: column;
+  align-items: center;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#input-section form {
+  display: flex;
+  flex-direction: column;
+}
+
+#input-section label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+#input-section textarea {
+  width: 60vw;
+  height: 15vh;
+}
+
+.submit {
+  display: flex;
+  justify-content: space-between;
+}
+
+.preset-box {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Response section styles */
+
+#responses {
+  margin-top: 2rem;
+}
+
+.single-response-block {
+  display: grid;
+  grid-template: "prompt-label prompt" 1fr
+                 "response-label response" 1fr
+                 / auto;
+  background-color: lightgray;
+  border-radius: 12px;
+  padding: 0 1rem;
+  margin: 1rem 0;
+}
+
+.response-component {
+  display: inline-block;
+}
+
+.label {
+  font-weight: bold;
+}
+
+.prompt-label {
+  grid-area: "prompt-label";
+}
+
+.prompt {
+  grid-area: "prompt";
+}
+
+.response-label {
+  grid-area: "response-label";
+}
+
+.response {
+  grid-area: "response";
 }
