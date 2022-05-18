@@ -25,10 +25,6 @@ export default function ResponseSection({ userInput, response, responseRef }) {
             setResponseToRender(null);
         }
     }, [responseToRender, contents, resCount, userInput]);
-
-    useEffect(() => {
-        console.log(contents);
-    }, [contents]);
     
     return (
         <section id="responses">
