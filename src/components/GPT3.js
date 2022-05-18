@@ -10,8 +10,6 @@ export const getResponse = async (input) => {
         body: JSON.stringify(data)
     }).then(res => res.json());
 
-    console.log(response);
-
     let text = response.choices[0].text;
 
     return text;
