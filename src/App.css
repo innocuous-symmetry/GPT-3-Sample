@@ -62,6 +62,10 @@ button:active {
   flex-direction: column;
 }
 
+select {
+  border-radius: 5px;
+}
+
 /* Response section styles */
 
 #responses {

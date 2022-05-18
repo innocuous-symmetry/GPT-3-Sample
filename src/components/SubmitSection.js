@@ -1,16 +1,9 @@
-export default function SubmitSection({ promptCallback, userInput, responseCallback }) {
-    const getResponse = async () => {
-        let data = { prompt: userInput };
+import { getResponse } from "./GPT3.js";
 
-        await fetch("https://api.openai.com/v1/engines/text-curie-001/completions", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${process.env.REACT_APP_API_SECRET}`
-            },
-            body: JSON.stringify(data)
-        }).then(res => res.json())
-        .then(x => responseCallback(x.choices[0].text));
+export default function SubmitSection({ promptCallback, userInput, responseCallback }) {
+    const createNewEntry = async () => {
+        if (!userInput) return;
+        await getResponse(userInput).then((x) => responseCallback(x));
     }
 
     return (
@@ -24,7 +17,7 @@ export default function SubmitSection({ promptCallback, userInput, responseCallb
                     <option value="Tell me a good joke.">Tell me a good joke.</option>
                 </select>
             </div>
-            <button onClick={getResponse}>Submit</button>
+            <button onClick={createNewEntry}>Submit</button>
         </div>
     )
 }

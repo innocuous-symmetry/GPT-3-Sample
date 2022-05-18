@@ -1,42 +1,47 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function ResponseSection({ userInput, response, responseRef }) {
     const [resCount, setResCount] = useState(1);
-
-    const [contents, setContents] = useState([
-        <div key="response-1" className="single-response-block">
-            <p className="response-component label prompt-label">Prompt:</p>
-            <p className="response-component prompt">Your prompt will appear here...</p>
-            <p className="response-component label response-label">Response:</p>
-            <p className="response-component response">... and the AI response will appear here!</p>
-        </div>
-    ]);
-
-    const appendResponse = () => {
-        let newState = contents;
-        let newCount;
-        response && (newCount = setContents(newState.unshift(
-            <div key={`response-${resCount+1}`} className="single-response-block">
-                <p className="response-component label prompt-label">Prompt:</p>
-                <p className="response-component prompt">{userInput}</p>
-                <p className="response-component label response-label">Response:</p>
-                <p className="response-component response">{response}</p>
-            </div>
-        )));
-
-        setResCount(newCount);
-
-        console.log(contents);
-    }
+    const [contents, setContents] = useState([]);
+    const [responseToRender, setResponseToRender] = useState(null);
 
     useEffect(() => {
-        responseRef.current = appendResponse;
-    }, []);
+        response && setResponseToRender(response);
+    }, [response]);
+
+    useEffect(() => {
+        if (responseToRender) {
+            setContents((prev) => {
+                return [
+                    <div key={`response-${resCount+1}`} className="single-response-block">
+                        <p className="response-component label prompt-label">Prompt:</p>
+                        <p className="response-component prompt">{userInput}</p>
+                        <p className="response-component label response-label">Response:</p>
+                        <p className="response-component response">{responseToRender}</p>
+                    </div>,
+                ...prev]
+            });
+            setResCount(resCount + 1);
+            setResponseToRender(null);
+        }
+    }, [responseToRender, contents, resCount, userInput]);
+
+    useEffect(() => {
+        console.log(contents);
+    }, [contents]);
     
     return (
         <section id="responses">
             <h2>Responses</h2>
-            {contents}
+            <div className="contents">
+                {contents.length > 0 ? contents : null}
+                <div key="response-1" className="single-response-block">
+                    <p className="response-component label prompt-label">Prompt:</p>
+                    <p className="response-component prompt">Your prompt will appear here...</p>
+                    <p className="response-component label response-label">Response:</p>
+                    <p className="response-component response">... and the AI response will appear here!</p>
+                </div>
+            </div>
         </section>
-    )
+    );
 }
